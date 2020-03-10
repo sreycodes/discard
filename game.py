@@ -25,26 +25,26 @@ class Round:
         return False
 
     def play_turn(self):
-        card_played = self.turn.play(self.cards_played, self.max_sum, self.op.hand, "random")
+        card_played = self.turn.play(self.cards_played, self.max_sum, self.op.hand, self.turn.strategy)
         if card_played != None:
             print('Player ', self.turn.player_no, ' played ', card_played)
             self.cards_played.append(card_played)
         self.turn = self.return_opponent(self.turn)
 
     def run_round(self):
-        print('New round started')
+        print('\nNew round started')
         while(not self.check_if_over()):
             self.play_turn()
             print('Cards played - ', self.cards_played)
-        print('Round ended')
+        print('Round ended\n')
         return self.return_opponent(self.turn)
 
 
 class Game:
 
-    def __init__(self, max_rank, max_sum):
-        self.player1 = Player(1)
-        self.player2 = Player(2)
+    def __init__(self, max_rank, max_sum, strategy_one, strategy_two):
+        self.player1 = Player(1, strategy_one)
+        self.player2 = Player(2, strategy_two)
 
         #Hyper parameters
         self.max_rank = max_rank
@@ -82,5 +82,5 @@ class Game:
         print(winner.player_no, ' player won')
 
 if __name__ == '__main__':
-    g = Game(4, 11) # Hyper parameters
+    g = Game(4, 11, "min", "max") # Hyper parameters
     g.run_game()

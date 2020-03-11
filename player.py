@@ -35,8 +35,11 @@ class Player:
         random_index = random.random() * len(self.hand)
         return self.hand[random_index]
 
+    def hand_empty(self):
+        return len(self.hand) == 0
+
     def cannot_play(self, max_sum, current_sum):
-        if len(self.hand) == 0:
+        if self.hand_empty():
             return True
         cannot_play = True
         for card in self.hand:
@@ -76,5 +79,5 @@ class Player:
                 if self.hand[index].value > max_card.value and self.hand[index].value + current_sum <= max_sum:
                     max_card = self.hand[index]
             return self.play_card(max_card)
-            
+
         return None

@@ -16,9 +16,14 @@ class Round:
     def check_if_over(self):
         current_sum = sum([card.value for card in self.cards_played])
 
+        if self.fp.hand_empty() or self.op.hand_empty():
+            print('Player ', self.fp.player_no, ' Hand', self.fp.hand)
+            print('Player ', self.op.player_no, ' Hand', self.op.hand)
+            return True
+
         if self.fp.cannot_play(self.max_sum, current_sum) and self.op.cannot_play(self.max_sum, current_sum):
-            print(self.fp.player_no, ' Player Hand', self.fp.hand)
-            print(self.op.player_no, ' Player Hand', self.op.hand)
+            print('Player ', self.fp.player_no, ' Hand', self.fp.hand)
+            print('Player ', self.op.player_no, ' Hand', self.op.hand)
             return True
 
         print('Current Sum = ', current_sum)
@@ -42,7 +47,7 @@ class Round:
 
 class Game:
 
-    def __init__(self, max_rank, max_sum, strategy_one, strategy_two):
+    def __init__(self, max_rank, max_sum, strategy_one = "random", strategy_two = "random", custom_deck=None):
         self.player1 = Player(1, strategy_one)
         self.player2 = Player(2, strategy_two)
 
@@ -50,7 +55,10 @@ class Game:
         self.max_rank = max_rank
         self.max_sum = max_sum
 
-        self.deck = Deck(self.max_rank)
+        if custom_deck == None:
+            self.deck = Deck(self.max_rank)
+        else:
+            self.deck = custom_deck
         self.player1.hand_cards(self.deck.cards[::2])
         self.player2.hand_cards(self.deck.cards[1::2])
 
@@ -74,12 +82,15 @@ class Game:
 
     def run_game(self):
         print('Game started')
+        rounds = []
         while(not self.check_if_over()):
             r = Round(self.max_sum, self.round_starter, self.return_opponent(self.round_starter))
             self.round_starter = r.run_round()
+            rounds.append(r)
         print('Game over')
         winner = self.return_winner()
-        print(winner.player_no, ' player won')
+        print('player ', winner.player_no, ' won')
+        return winner, rounds
 
 if __name__ == '__main__':
     g = Game(4, 11, "min", "max") # Hyper parameters

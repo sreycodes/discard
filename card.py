@@ -32,3 +32,6 @@ class Card:
 
     def __repr__(self):
         return str(self.suit) + ' ' + str(self.rank)
+
+    def __cmp__(self, obj):
+        return self.value - obj.value

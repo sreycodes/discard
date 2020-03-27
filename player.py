@@ -48,14 +48,14 @@ class Player:
                 break
         return cannot_play
 
-    def play(self, cards_played, max_sum, other_player_hand, algo_name):
-        # Write algo to decide card and call play_cardn
+    def play(self, cards_played, max_sum, other_player_hand, strategy):
+        # Write algo to decide card and call play_card()
 
         current_sum = sum([card.value for card in cards_played])
         if self.cannot_play(max_sum, current_sum):
             return None
 
-        if algo_name == "random":
+        if strategy == "rand":
             index = 0
             card = self.hand[index]
             while(card.value + current_sum > max_sum):
@@ -63,14 +63,14 @@ class Player:
                 card = self.hand[index]
             return self.play_card(card)
 
-        if algo_name == "min":
+        elif strategy == "min":
             min_card = self.hand[0]
             for index in range(len(self.hand)):
                 if self.hand[index].value < min_card.value:
                     min_card = self.hand[index]
             return self.play_card(min_card)
 
-        if algo_name == "max":
+        elif strategy == "max":
             max_card = self.hand[0]
             for index in range(len(self.hand)):
                 # if initial card is invalid
@@ -79,5 +79,8 @@ class Player:
                 if self.hand[index].value > max_card.value and self.hand[index].value + current_sum <= max_sum:
                     max_card = self.hand[index]
             return self.play_card(max_card)
+
+        else:
+            raise Exception('Invalid strategy')
 
         return None

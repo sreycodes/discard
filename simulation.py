@@ -1,6 +1,8 @@
 from game import Game
 from itertools import product
 from deck import Deck
+import matplotlib.pyplot as plt
+import numpy as np
 
 def run_simulations(max_rank_list, max_sum_list, strategy_one_list, strategy_two_list, custom_deck_list):
 
@@ -34,7 +36,7 @@ def run_simulations(max_rank_list, max_sum_list, strategy_one_list, strategy_two
     print('Player 1 won ', p1wins * 100 / n, ' percent of the time')
     print('Player 2 won ', p2wins * 100 / n, ' percent of the time')
 
-    return winners, round_info
+    return p1wins, p2wins, winners, round_info
 
 def grid_simulations(max_rank_list, max_sum_list, strategy_one_list, strategy_two_list, custom_deck_list):
 
@@ -58,6 +60,51 @@ def grid_simulations(max_rank_list, max_sum_list, strategy_one_list, strategy_tw
 
     return game_info
 
+def plot_simulations_strategies(strategy_list, max_rank=4, max_sum=11, n_iterations=100):
+	# runs n_iterations of games of every permutation of stratetgy 1 vs. strategy 2 in strategy list with constant max_rank,
+	# max_sum, and deck, then plots a double bar graph of results
+	p1wins_list = []
+	p2wins_list = []
+	x_labels = []
+	N = 0
+
+	mrl = []
+	msl = []
+	cdl = []
+	for n in range(n_iterations):
+		mrl.append(max_rank)
+		msl.append(max_sum)
+		cdl.append(Deck(max_rank))
+
+	for strat_one in strategy_list:
+		for strat_two in strategy_list:
+			s1l = []
+			s2l = []
+			for n in range(n_iterations):
+				s1l.append(strat_one)
+				s2l.append(strat_two)
+			results = run_simulations(mrl, msl, s1l, s2l, cdl)
+			p1wins_list.append(results[0])
+			p2wins_list.append(results[1])
+			x_labels.append(strat_one + " vs. " + strat_two)
+			N += 1
+
+	indices = np.arange(N)
+	width = 0.3
+
+	ax = plt.subplot(111)
+
+	rects1 = ax.barh(indices, p1wins_list, width-0.05, color="r")
+	rects2 = ax.barh(indices+width, p2wins_list, width-0.05, color="b")
+
+	ax.set_xlabel("Number of Wins")
+	ax.set_yticks(indices+(width/2))
+	ax.set_yticklabels(x_labels)
+	ax.legend((rects1[0], rects2[0]), ('P1 wins', 'P2 wins'))
+
+	plt.grid(axis='x')
+	plt.show()
+
 if __name__ == '__main__':
     mrl = [4, 5]
     msl = [11, 16]
@@ -65,8 +112,9 @@ if __name__ == '__main__':
     s2l = s1l
     cdl = [None, Deck(mrl[1], shuffle=False)]
 
-    run_simulations(mrl, msl, s1l, s2l, cdl)
+    # run_simulations(mrl, msl, s1l, s2l, cdl)
     # grid_simulations(mrl, msl, s1l, s2l, cdl)
+    plot_simulations_strategies(strategy_list=["min", "max", "rand"])
 
 
 

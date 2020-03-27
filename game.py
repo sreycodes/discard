@@ -47,7 +47,7 @@ class Round:
 
 class Game:
 
-    def __init__(self, max_rank, max_sum, strategy_one = "random", strategy_two = "random", custom_deck=None):
+    def __init__(self, max_rank, max_sum, strategy_one = "rand", strategy_two = "rand", custom_deck=None):
         self.player1 = Player(1, strategy_one)
         self.player2 = Player(2, strategy_two)
 
@@ -93,5 +93,8 @@ class Game:
         return winner, rounds
 
 if __name__ == '__main__':
+    # Current strategies: "min", "max", "rand"
+    # Strategies can be found and made in player.py play()
+
     g = Game(4, 11, "min", "max") # Hyper parameters
     g.run_game()

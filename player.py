@@ -1,4 +1,5 @@
 import random
+from card import Card
 
 class Player:
 
@@ -13,12 +14,15 @@ class Player:
             return self.player_no == other.player_no
         return False
 
+    def __hash__(self):
+        return self.player_no
+
     def __ne__(self, other):
         """Overrides the default implementation (unnecessary in Python 3)"""
         return not self.__eq__(other)
 
     def __str__(self):
-        return 'Player ' + str(self.player_no) + ' - ' + str(self.hand)
+        return 'Player ' + str(self.player_no) + ' with hand - ' + str(self.hand)
 
     def hand_one_card(self, card):
         self.hand.append(card)
@@ -54,6 +58,9 @@ class Player:
         current_sum = sum([card.value for card in cards_played])
         if self.cannot_play(max_sum, current_sum):
             return None
+
+        if isinstance(strategy, Card):
+            return self.play_card(strategy)
 
         if strategy == "rand":
             index = 0

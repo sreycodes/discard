@@ -10,28 +10,26 @@ class Round:
         self.op = other_player
         self.turn = self.fp
 
+    def __str__(self):
+        return 'Round ' + self.id + ' at turn ' + str(self.turn) + ' - ' + str(self.cards_played) 
+
     def return_opponent(self, player):
         return self.op if player == self.fp else self.fp
 
     def check_if_over(self):
         current_sum = sum([card.value for card in self.cards_played])
 
-        if self.fp.hand_empty() or self.op.hand_empty():
-            print('Player ', self.fp.player_no, ' Hand', self.fp.hand)
-            print('Player ', self.op.player_no, ' Hand', self.op.hand)
+        if (self.fp.hand_empty() or self.op.hand_empty()) or (self.fp.cannot_play(self.max_sum, current_sum) and self.op.cannot_play(self.max_sum, current_sum)):
+            # print('Player ', self.fp.player_no, ' Hand', self.fp.hand)
+            # print('Player ', self.op.player_no, ' Hand', self.op.hand)
             return True
 
-        if self.fp.cannot_play(self.max_sum, current_sum) and self.op.cannot_play(self.max_sum, current_sum):
-            print('Player ', self.fp.player_no, ' Hand', self.fp.hand)
-            print('Player ', self.op.player_no, ' Hand', self.op.hand)
-            return True
-
-        print('Current Sum = ', current_sum)
+        # print('Current Sum = ', current_sum)
         return False
 
     def play_turn(self):
-        card_played = self.turn.play(self.cards_played, self.max_sum, self.op.hand, self.turn.strategy)
-        if card_played != None:
+        card_played = self.turn.play(self.cards_played, self.max_sum, self.return_opponent(self.turn).hand, self.turn.strategy)
+        if card_played is not None:
             print('Player ', self.turn.player_no, ' played ', card_played)
             self.cards_played.append(card_played)
         self.turn = self.return_opponent(self.turn)
@@ -55,7 +53,7 @@ class Game:
         self.max_rank = max_rank
         self.max_sum = max_sum
 
-        if custom_deck == None:
+        if custom_deck is None:
             self.deck = Deck(self.max_rank)
         else:
             self.deck = custom_deck
@@ -63,8 +61,9 @@ class Game:
         self.player2.hand_cards(self.deck.cards[1::2])
 
         self.round_starter = self.player1
-        print(self.player1)
-        print(self.player2)
+
+    def __str__(self):
+        return 'Game(' + str(self.max_rank) + ', ' + str(self.max_sum) + ') started with\n' + 'Player 1 - ' + str(self.player1.hand) + '\nPlayer 2 - ' + str(self.player2.hand)
 
     def return_opponent(self, player):
         return self.player2 if player == self.player1 else self.player1

@@ -14,7 +14,7 @@ class Deck:
             self.shuffle_deck()
 
     def populate_deck(self, rank_order):
-        order = rank_order if rank_order != None else range(1, self.max_rank + 1)
+        order = rank_order if rank_order is not None else range(1, self.max_rank + 1)
         for rank in order:
             for suit in Suit:
                 self.cards.append(Card(rank, suit))

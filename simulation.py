@@ -68,7 +68,7 @@ def grid_simulations(max_rank_list, max_sum_list, strategy_one_list, strategy_tw
 
     return p1wins, p2wins, game_info
 
-def plot_simulations_strategies(p1wins, p2wins, xlabels, N):
+def plot_simulations_strategies(p1wins, p2wins, xlabels, N, title):
 
     indices = np.arange(N)
     width = 0.3
@@ -78,10 +78,17 @@ def plot_simulations_strategies(p1wins, p2wins, xlabels, N):
     rects1 = ax.barh(indices, p2wins, width-0.05, color="b")
     rects2 = ax.barh(indices+width, p1wins, width-0.05, color="r")
 
+    for index, value in enumerate(p1wins):
+        ax.text(value, index+width-0.125, str(value))
+
+    for index, value in enumerate(p2wins):
+        ax.text(value, index-0.125, str(value))
+
     ax.set_xlabel("Number of Wins")
     ax.set_yticks(indices+(width/2))
     ax.set_yticklabels(xlabels)
     ax.legend((rects2[0], rects1[0]), ('P1 wins', 'P2 wins'))
+    ax.set_title(title)
 
     plt.grid(axis='x')
     plt.show()
@@ -110,7 +117,7 @@ def check_effect_of_hyperparameters(max_rank_list):
                  + ': Player ' + str(game_info["winner"].player_no))
 
 
-    plot_simulations_strategies(p1wins_list, p2wins_list, x_labels, N)
+    plot_simulations_strategies(p1wins_list, p2wins_list, x_labels, N, "Effect of Hyperparameters")
 
 
 
@@ -143,7 +150,13 @@ def compare_strategies(strategy_list, max_rank=4, max_sum=11, n_iterations=100):
             x_labels.append(strat_one + " vs. " + strat_two)
             N += 1
 
-    plot_simulations_strategies(p1wins_list, p2wins_list, x_labels, N)
+    plot_simulations_strategies(p1wins_list, p2wins_list, x_labels, N, "Max Rank: " + str(max_rank) + " Max Sum: " + str(max_sum))
+
+def compare_hyperparameters(strategy_list, max_rank_list, max_sum_list):
+    # runs compare_strategies for every combination of max_rank and max_sum
+    for max_rank in max_rank_list:
+        for max_sum in max_sum_list:
+            compare_strategies(strategy_list, max_rank, max_sum)
 
 if __name__ == '__main__':
     mrl = [4, 5]
@@ -155,6 +168,8 @@ if __name__ == '__main__':
     # run_simulations(mrl, msl, s1l, s2l, cdl)
     # grid_simulations(mrl, msl, s1l, s2l, cdl)
     compare_strategies(strategy_list=["min", "max", "rand", "sim_round"])
+    # compare_strategies(strategy_list=["min", "max", "rand"])
+    compare_hyperparameters(["min", "max", "rand", "smart"], [3,4,5,6], [10,11,13,16])
     # check_effect_of_hyperparameters(max_rank_list=list(range(1,10)))
 
 

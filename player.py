@@ -75,6 +75,37 @@ class Player:
                 card = self.hand[index]
             return self.play_card(card)
 
+        elif strategy == "smart":
+            # play card if can add to max_sum
+            for index in range(len(self.hand)):
+                if self.hand[index].value + current_sum == max_sum:
+                    return self.play_card(self.hand[index])
+
+            # else play max card that doesn't allow other player to win round
+            max_valid_card = None
+            for i in range(len(self.hand)):
+                valid = True
+                for j in range(len(other_player_hand)):
+                    if self.hand[index].value + other_player_hand[j].value + current_sum == max_sum:
+                        valid = False
+                if valid:
+                    if max_valid_card == None or self.hand[index].value > max_valid_card.value:
+                        max_valid_card = self.hand[index]
+
+            if max_valid_card != None:
+                return self.play_card(max_valid_card)
+            
+            # else just play max card
+            else:
+                max_card = self.hand[0]
+                for index in range(len(self.hand)):
+                    # if initial card is invalid
+                    if max_card.value + current_sum > max_sum:
+                        max_card = self.hand[index]
+                    if self.hand[index].value > max_card.value and self.hand[index].value + current_sum <= max_sum:
+                        max_card = self.hand[index]
+                return self.play_card(max_card)
+
         elif strategy == "min":
             min_card = self.hand[0]
             for index in range(len(self.hand)):

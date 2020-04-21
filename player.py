@@ -1,5 +1,6 @@
 import random
 from card import Card
+from tree import GameTree
 
 class Player:
 
@@ -52,7 +53,7 @@ class Player:
                 break
         return cannot_play
 
-    def play(self, cards_played, max_sum, other_player_hand, strategy):
+    def play(self, cards_played, max_sum, other_player_hand, strategy, game=None):
         # Write algo to decide card and call play_card()
 
         current_sum = sum([card.value for card in cards_played])
@@ -61,6 +62,10 @@ class Player:
 
         if isinstance(strategy, Card):
             return self.play_card(strategy)
+
+        if strategy == "sim_round":
+            t = GameTree(max_sum - current_sum, self.player_no, self.hand, self.player_no + 1, other_player_hand)
+            return self.play_card(t.choose_card_for_round(max_sum - current_sum, self.player_no, self.hand, self.player_no + 1, other_player_hand))
 
         if strategy == "rand":
             index = 0

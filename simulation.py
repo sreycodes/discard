@@ -25,6 +25,7 @@ def run_simulations(max_rank_list, max_sum_list, strategy_one_list, strategy_two
         s2 = strategy_two_list[i]
         cd = custom_deck_list[i]
         g = Game(mr, ms, s1, s2, cd)
+        print(g)
         w, r = g.run_game()
         winners.append(w)
         round_info.append(r)
@@ -153,8 +154,8 @@ if __name__ == '__main__':
 
     # run_simulations(mrl, msl, s1l, s2l, cdl)
     # grid_simulations(mrl, msl, s1l, s2l, cdl)
-    # compare_strategies(strategy_list=["min", "max", "rand"])
-    check_effect_of_hyperparameters(max_rank_list=list(range(1,10)))
+    compare_strategies(strategy_list=["min", "max", "rand", "sim_round"])
+    # check_effect_of_hyperparameters(max_rank_list=list(range(1,10)))
 
 
 

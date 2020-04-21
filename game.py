@@ -42,7 +42,6 @@ class Round:
         print('Round ended\n')
         return self.return_opponent(self.turn)
 
-
 class Game:
 
     def __init__(self, max_rank, max_sum, strategy_one = "rand", strategy_two = "rand", custom_deck=None):
@@ -94,6 +93,8 @@ class Game:
 if __name__ == '__main__':
     # Current strategies: "min", "max", "rand"
     # Strategies can be found and made in player.py play()
-
-    g = Game(4, 11, "min", "max") # Hyper parameters
+    # custom_deck = Deck(3, [2, 1, 3, 1, 2, 3, 2, 1, 3, 1, 2, 3], shuffle=False)
+    # print(custom_deck.cards)
+    g = Game(3, 5, "sim_round", "max")#, custom_deck) # Hyper parameters
+    print(g)
     g.run_game()

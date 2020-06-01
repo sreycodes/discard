@@ -37,7 +37,7 @@ class Node:
         return cannot_play
 
     def print(self, appender):
-        print(appender + ' Player ' + str(self.turn_no) + ' with hand ' + str(self.turn_hand) + ' - ' + str(self.cp) + ' winners - ' + str(self.possible_winners))
+        # print(appender + ' Player ' + str(self.turn_no) + ' with hand ' + str(self.turn_hand) + ' - ' + str(self.cp) + ' winners - ' + str(self.possible_winners))
         for c in self.children:
             c.print(appender + ' ')
 
@@ -47,8 +47,8 @@ class Node:
         elif len(self.opp_hand) == 0:
             return self.opp_no
         else:
-            print('Not a terminal node - no one won!')
-            print(str(self.cp) + ' ' + str(self.turn_hand) + ' ' + str(self.opp_hand))
+            # print('Not a terminal node - no one won!')
+            # print(str(self.cp) + ' ' + str(self.turn_hand) + ' ' + str(self.opp_hand))
             return None
 
 class GameTree:
@@ -97,7 +97,7 @@ class GameTree:
         rs_node = Node(ms, yp_no, yp_hand, opp_no, opp_hand, 0, [])
         leaves, winner = self.make_round_tree(rs_node)
         if winner == opp_no: #whatever you do you lose
-            print('No matter what you play you lose')
+            # print('No matter what you play you lose')
             return yp_hand[0] #any card really
         else: #Choose child with most victories
             winner_nodes = [x for x in rs_node.children if x.winner == yp_no]
@@ -116,10 +116,11 @@ class GameTree:
 
     def make_tree(self, node):
         if node.check_terminal():
+            node.winner = node.turn_no
             return node
         else:
-            leaves, round_winner = self.make_round_tree(node)
-            for leaf in leaves:
+            round_leaves, round_winner = self.make_round_tree(node)
+            for leaf in round_leaves:
                 next_node = Node(leaf.ms, leaf.turn_no, leaf.turn_hand, leaf.opp_no, leaf.opp_hand, leaf.l + 1, [])
                 next_node = self.make_tree(next_node)
                 leaf.children.append(next_node)

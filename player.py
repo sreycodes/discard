@@ -31,9 +31,11 @@ class Player:
     def hand_cards(self, cards):
         for card in cards:
             self.hand_one_card(card)
+        self.hand = sorted(self.hand)
 
     def play_card(self, card):
-        self.hand.remove(card)
+        if card:
+            self.hand.remove(card)
         return card
 
     def choose_random_card(self):
@@ -122,6 +124,26 @@ class Player:
                 if self.hand[index].value > max_card.value and self.hand[index].value + current_sum <= max_sum:
                     max_card = self.hand[index]
             return self.play_card(max_card)
+
+        elif strategy == "user":
+            # print('Cards played: ', cards_played)
+            print('Your hand: ', self.hand)
+            print('Opp hand: ', other_player_hand)
+            card_to_play = input('You play: ')
+            card, err = Card.from_str(card_to_play)
+            while(err != None):
+                print('Invalid input or unexpected error encountered. Valid examples are: C2, D3, S10')
+                card_to_play = input('You play: ')
+                card, err = Card.from_str(card_to_play)
+            while(card not in self.hand):
+                print('You dont hold that card. Your hand is ', self.hand)
+                card_to_play = input('You play: ')
+                card, err = Card.from_str(card_to_play)
+            while(card.value + current_sum > max_sum):
+                print('You cannot play that card as it will exceed max_sum. Your hand is ', self.hand)
+                card_to_play = input('You play: ')
+                card, err = Card.from_str(card_to_play)
+            return self.play_card(card)
 
         else:
             raise Exception('Invalid strategy')

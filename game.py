@@ -30,7 +30,7 @@ class Round:
     def play_turn(self):
         card_played = self.turn.play(self.cards_played, self.max_sum, self.return_opponent(self.turn).hand, self.turn.strategy)
         if card_played is not None:
-            print('Player ', self.turn.player_no, ' played ', card_played)
+            # print('Player ', self.turn.player_no, ' played ', card_played)
             self.cards_played.append(card_played)
         self.turn = self.return_opponent(self.turn)
 
@@ -75,7 +75,7 @@ class Game:
             return self.player1
         if len(self.player2.hand) == 0:
             return self.player2
-        print('No one has won the game yet!')
+        # print('No one has won the game yet!')
         return None
 
     def run_game(self):
@@ -95,6 +95,6 @@ if __name__ == '__main__':
     # Strategies can be found and made in player.py play()
     # custom_deck = Deck(3, [2, 1, 3, 1, 2, 3, 2, 1, 3, 1, 2, 3], shuffle=False)
     # print(custom_deck.cards)
-    g = Game(3, 5, "sim_round", "max")#, custom_deck) # Hyper parameters
+    g = Game(4, 11, "user", "sim_round")#, custom_deck) # Hyper parameters
     print(g)
     g.run_game()

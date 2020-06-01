@@ -1,4 +1,5 @@
 from enum import Enum
+from functools import total_ordering
 
 class Suit(Enum):
     CLUBS = 1
@@ -6,6 +7,7 @@ class Suit(Enum):
     HEARTS = 3
     SPADES = 4
 
+@total_ordering
 class Card:
 
     def __init__(self, rank, suit):
@@ -28,10 +30,25 @@ class Card:
         return not self.__eq__(other)
 
     def __str__(self):
-        return str(self.suit) + ' ' + str(self.rank)
+        suit_to_str = ['C', 'D','H', 'S']
+        return suit_to_str[self.suit.value - 1] + str(self.rank)
 
     def __repr__(self):
-        return str(self.suit) + ' ' + str(self.rank)
+        suit_to_str = ['C', 'D','H', 'S']
+        return suit_to_str[self.suit.value - 1] + str(self.rank)
 
     def __cmp__(self, obj):
         return self.value - obj.value
+
+    def __lt__(self, other):
+        return self.value < other.value
+
+    @classmethod
+    def from_str(cls, s):
+        try:
+            str_to_suit = {'H': Suit.HEARTS, 'C': Suit.CLUBS, 'D': Suit.DIAMONDS, 'S': Suit.SPADES}
+            suit = str_to_suit[s[0]]
+            rank = int(s[1:])
+            return cls(rank, suit), None
+        except Exception as e:
+            return None, e

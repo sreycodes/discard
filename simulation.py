@@ -167,9 +167,9 @@ if __name__ == '__main__':
 
     # run_simulations(mrl, msl, s1l, s2l, cdl)
     # grid_simulations(mrl, msl, s1l, s2l, cdl)
-    compare_strategies(strategy_list=["min", "max", "rand", "sim_round"])
+    compare_strategies(strategy_list=[ "max", "sim_round", "smart"])
     # compare_strategies(strategy_list=["min", "max", "rand"])
-    compare_hyperparameters(["min", "max", "rand", "smart"], [3,4,5,6], [10,11,13,16])
+    # compare_hyperparameters(["min", "max", "rand", "smart"], [3,4,5,6], [10,11,13,16])
     # check_effect_of_hyperparameters(max_rank_list=list(range(1,10)))
 
 

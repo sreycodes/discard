@@ -10,4 +10,6 @@ Players take turns playing one of their cards to the middle, adding on to the ca
 
 The default setup for this game is max_rank = 4 and max_sum = 11.  
 
-To play against the AI with these default settings, just run ```python3 game.py```
+To play against the AI with these default settings, just run ```python3 game.py```  
+
+```sim.png``` shows the results of the best strategies coded when they are pitted against each other.

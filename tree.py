@@ -37,7 +37,7 @@ class Node:
         return cannot_play
 
     def print(self, appender):
-        # print(appender + ' Player ' + str(self.turn_no) + ' with hand ' + str(self.turn_hand) + ' - ' + str(self.cp) + ' winners - ' + str(self.possible_winners))
+        print(appender + ' Player ' + str(self.turn_no) + ' with hand ' + str(self.turn_hand) + ' - ' + str(self.cp) + ' winners - ' + str(self.possible_winners))
         for c in self.children:
             c.print(appender + ' ')
 
@@ -96,23 +96,26 @@ class GameTree:
     def choose_card_for_round(self, ms, yp_no, yp_hand, opp_no, opp_hand):
         rs_node = Node(ms, yp_no, yp_hand, opp_no, opp_hand, 0, [])
         leaves, winner = self.make_round_tree(rs_node)
-        if winner == opp_no: #whatever you do you lose
-            # print('No matter what you play you lose')
-            return yp_hand[0] #any card really
-        else: #Choose child with most victories
-            winner_nodes = [x for x in rs_node.children if x.winner == yp_no]
-            # rs_node.print('')
-            # print(rs_node.check_round_over())
-            most_probable_winner_node = winner_nodes[0]
-            num_wins = len([x for x in most_probable_winner_node.possible_winners if x == yp_no])
-            for child in winner_nodes:
-                nw = len([x for x in child.possible_winners if x == yp_no])
-                # print(child.possible_winners, child.cp)
-                if nw > num_wins:
-                    num_wins = nw
-                    most_probable_winner_node = child
-            # print('Best card to play - ' + str(most_probable_winner_node.cp[0]))
-            return most_probable_winner_node.cp[0]
+        # rs_node.print('')
+        # if winner == opp_no: #whatever you do you lose
+        #     # print('No matter what you play you lose')
+        #     return yp_hand[0] #any card really
+        # else: #Choose child with most victories
+        # print(yp_no)
+        winner_nodes = rs_node.children #[x for x in rs_node.children if x.winner == yp_no]
+        # rs_node.print('')
+        # print(rs_node.check_round_over())
+        most_probable_winner_node = winner_nodes[0]
+        num_wins = len([x for x in most_probable_winner_node.possible_winners if x == yp_no])
+        for child in winner_nodes:
+            nw = len([x for x in child.possible_winners if x == yp_no])
+            # print(child.cp, nw)
+            # print(child.possible_winners, child.cp)
+            if nw > num_wins or (nw == num_wins and child.cp[0].value > most_probable_winner_node.cp[0].value):
+                num_wins = nw
+                most_probable_winner_node = child
+        # print('Best card to play - ' + str(most_probable_winner_node.cp[0]))
+        return most_probable_winner_node.cp[0]
 
     def make_tree(self, node):
         if node.check_terminal():

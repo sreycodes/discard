@@ -93,8 +93,12 @@ class Game:
 if __name__ == '__main__':
     # Current strategies: "min", "max", "rand"
     # Strategies can be found and made in player.py play()
-    # custom_deck = Deck(3, [2, 1, 3, 1, 2, 3, 2, 1, 3, 1, 2, 3], shuffle=False)
+    custom_deck = Deck(3, [1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3], shuffle=False)
     # print(custom_deck.cards)
-    g = Game(4, 11, "user", "sim_round")#, custom_deck) # Hyper parameters
+    player_no = input("Enter 1 to play as player 1 and 2 as player 2")
+    if player_no == 1:
+        g = Game(3, 7, "user", "sim_round")#, custom_deck) # Hyper parameters
+    else:
+        g = Game(3, 7, "smart", "user")#, custom_deck) # Hyper parameters
     print(g)
     g.run_game()

@@ -91,7 +91,7 @@ class Player:
                     if self.hand[index].value + other_player_hand[j].value + current_sum == max_sum:
                         valid = False
                 if valid:
-                    if max_valid_card == None or self.hand[index].value > max_valid_card.value:
+                    if max_valid_card == None or (self.hand[index].value > max_valid_card.value and self.hand[index].value + current_sum <= max_sum):
                         max_valid_card = self.hand[index]
 
             if max_valid_card != None:

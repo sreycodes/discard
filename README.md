@@ -1,4 +1,9 @@
 # Discard
+
+This was a card game made as a final project for [Applied Combinatorics](https://math.gatech.edu/courses/math/3012) during my semester at Georgia Tech.
+
+## Setup and Instructions
+
 All of the cards from Ace, 2, …, **max_rank** are taken from the deck and distributed randomly amongst two players so that they have the same number of cards in their hands but not necessarily the same number of each rank, e.g. 
 max_rank = 4  
 

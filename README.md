@@ -1,6 +1,6 @@
 # Discard
 
-This was a card game made as a final project for [Applied Combinatorics](https://math.gatech.edu/courses/math/3012) during my semester at Georgia Tech.
+This was a card game made as a final project for [Applied Combinatorics](https://math.gatech.edu/courses/math/3012) during my semester at Georgia Tech. _Final Report.pdf_ is our final submission analysing the game we came up with.
 
 ## Setup and Instructions
 
